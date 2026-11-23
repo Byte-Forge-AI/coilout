@@ -296,8 +296,9 @@ body.phase #garden #skyTint{opacity:1}
 #sky .moonI{opacity:0}#sky.night .moonI{opacity:1}#sky.night .sunI{opacity:0}
 #sky.pulse{animation:skyPulse 320ms ease-out}
 @keyframes skyPulse{0%{transform:scale(1)}40%{transform:scale(1.28)}100%{transform:scale(1)}}
-.dimP{fill:#0A0F14;fill-opacity:0;transition:fill-opacity .2s;pointer-events:none}
-.piece.asleep .dimP{fill-opacity:.34}
+.dimG{opacity:0;transition:opacity .2s;pointer-events:none}
+.dimP{fill:#0A0F14;pointer-events:none}
+.piece.asleep .dimG{opacity:.42}
 .piece.asleep .eyeL,.piece.asleep .eyeR{animation:none;transform:scaleY(.12)}
 .badge-g{pointer-events:none}
 .badge-g .leaf{transform-box:fill-box;transform-origin:50% 50%}
@@ -313,7 +314,7 @@ body.phase #garden #skyTint{opacity:1}
 .dialNote{position:absolute;left:50%;top:40px;transform:translateX(-50%);font:700 12px/1 var(--ui);color:var(--text-2);white-space:nowrap;pointer-events:none}
 @media (prefers-reduced-motion:reduce){
   #flies i,.hdi,.eyeL,.eyeR,.hintring circle,.tapRing circle,.ripple,#boot i,.tile.cur::after,.badge-g .leaf{animation:none!important}
-  #sky .dial,#garden #skyTint::before,#garden #skyTint::after,.dimP{transition:none}
+  #sky .dial,#garden #skyTint::before,#garden #skyTint::after,.dimG{transition:none}
   .btn,.ib,.tile{transition:none}
   .nudgeA,.kerbN,.burst line,.lit,.wv{animation-duration:.1s!important}
   .st i{display:none}
@@ -575,7 +576,7 @@ function shiftL(hex,dl){      /* lightness shift in HSL, dl in points of lightne
 }
 
 /* ---- the rounded-spade head, in head-local units (x = forward, y = across), origin at the head-cell centre ---- */
-var HEAD_PROFILE=[[.44,0],[.43,.04],[.405,.085],[.35,.145],[.275,.21],[.18,.27],[.07,.315],[-.03,.318],[-.11,.29],[-.165,.255],[-.20,.225],[-.25,.205],[-.31,.2]];
+var HEAD_PROFILE=[[.44,0],[.43,.04],[.405,.085],[.35,.145],[.275,.21],[.18,.27],[.07,.315],[-.03,.318],[-.11,.29],[-.165,.255],[-.20,.222],[-.26,.192],[-.32,.15]];
 var HEADD=(function(){
   var up=HEAD_PROFILE.map(function(p){return [p[0]*CELL,p[1]*CELL];}),B=[],i;
   for(i=up.length-1;i>=0;i--)B.push([up[i][0],-up[i][1]]);
@@ -613,8 +614,9 @@ function snakeEls(parent,k,opt){
   e.gLg=svgEl('circle',{class:'gl',fill:'#fff','fill-opacity':.9},e.eyeL);e.gRg=svgEl('circle',{class:'gl',fill:'#fff','fill-opacity':.9},e.eyeR);
   e.chevU=svgEl('path',{class:'chevU',fill:'none',stroke:c.l,'stroke-opacity':.85,'stroke-linecap':'round','stroke-linejoin':'round'},parent);
   e.chev=svgEl('path',{class:'chev',fill:'none',stroke:'#FFF6E2','stroke-linecap':'round','stroke-linejoin':'round'},parent);
-  e.dim=svgEl('path',{class:'dimP'},parent);
-  e.dimH=svgEl('g',null,parent);svgEl('path',{class:'dimP',d:HEADD},e.dimH);
+  e.dimG=svgEl('g',{class:'dimG'},parent);                 /* one group, so body and head overlap never darken twice */
+  e.dim=svgEl('path',{class:'dimP'},e.dimG);
+  e.dimH=svgEl('g',null,e.dimG);svgEl('path',{class:'dimP',d:HEADD},e.dimH);
   e.k=k;
   return e;
 }
@@ -698,7 +700,7 @@ function drawSnake(e,L,ta,sh,o){
   e.gRg.setAttribute('cx',fx(ex+gg[0]));e.gRg.setAttribute('cy',fx(ey+gg[1]));e.gRg.setAttribute('r',fx(.018*CELL));
   /* racers: bold chevrons along the back (dark underlay + cream stroke), pointing the way it travels, clear of the head and inside the body */
   if(o.chev){
-    var cd='',cj,ca=.08*CELL,cb=.095*CELL,cnt=0;
+    var cd='',cj,ca=.075*CELL,cb=.085*CELL,cnt=0;
     for(cj=0;cj<3;cj++){
       var cs_=sh-(.6+cj*.27)*CELL;if(cs_<ta+.42*CELL)break;
       var cq=sampleAt(L,cs_),ctx=cq[2],cty=cq[3],cnx=-cty,cny=ctx;
@@ -1140,7 +1142,7 @@ function kindWord(p){
 }
 function snakeLabel(p,i){var c=SC[p.k%7];return 'Snake '+(i+1)+', '+c.n+' '+c.pat+', facing '+DIRWORD[p.d]+kindWord(p);}
 var SUN_RAYS=(function(){var d='',i;for(i=0;i<8;i++){var a=i*Math.PI/4;d+='M'+(Math.cos(a)*9.5).toFixed(1)+' '+(Math.sin(a)*9.5).toFixed(1)+'L'+(Math.cos(a)*13).toFixed(1)+' '+(Math.sin(a)*13).toFixed(1);}return d;})();
-var MOON_D='M3 -11A11 11 0 1 0 3 11A8.2 8.2 0 1 1 3 -11Z';
+var MOON_D='M3 -10.58A11 11 0 1 0 3 10.58A10.77 10.77 0 0 1 3 -10.58Z';
 /* marks sit on the body just behind the neck, centred on the spine. Local radius 10.6 = the whole round plate (dark edge, cream ring, face). */
 var BADGE_FONT='font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-weight="800" text-anchor="middle" dominant-baseline="central"';
 var SUN_RAYS_B=(function(){var d='',i;for(i=0;i<8;i++){var a=i*Math.PI/4+Math.PI/8;d+='M'+(Math.cos(a)*5.3).toFixed(2)+' '+(Math.sin(a)*5.3).toFixed(2)+'L'+(Math.cos(a)*7.7).toFixed(2)+' '+(Math.sin(a)*7.7).toFixed(2);}return d;})();
