@@ -1,0 +1,22 @@
+{
+ "id": "travel_006",
+ "title": "Free as a Bird",
+ "artist": "Harm-Jan '3xBlast' Wiechers",
+ "category": "Travel",
+ "license": "CC0-1.0",
+ "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+ "sourceName": "OpenGameArt",
+ "sourcePageTitle": "3xBlast - Free Music Pack (15 songs)",
+ "sourceUrl": "https://opengameart.org/node/97953",
+ "sourcePageAuthor": "3xBlast",
+ "verifiedAt": "2026-08-26",
+ "originalFilename": "3xBlast - Free as a Bird.wav",
+ "originalSha256": "2f631534c9d587493e339472e1721c92a1007195a1928985c32de616c6d0ee3b",
+ "audioPath": "audio/travel/travel_006.mp3",
+ "audioSha256": "7923d0d61738d180fdc28770861dcd7d001b8df08a59f5b75bb43e9b33ebf434",
+ "audioSizeBytes": 1537296,
+ "previewPath": "previews/travel/travel_006_preview.mp3",
+ "previewSha256": "440e91563457c0a6939dede4c7160a95d1249226de5804cd1cced029b331c63a",
+ "previewSizeBytes": 360847,
+ "transformation": "MP3 44.1 kHz stereo 192 kbps; preview fino a 30 secondi a 96 kbps"
+}
